@@ -2,6 +2,10 @@ const fs = require("fs");
 const csv = require("csv-parser");
 
 module.exports = {
+    /**
+     * 
+     * @param { string } path - Path of the temp file uploaded
+     */
     readFile(path) {
         const csvData = [];
         return new Promise((resolve, reject) => {

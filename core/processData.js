@@ -1,4 +1,10 @@
 module.exports = {
+    /**
+     * 
+     * @param { object } csvData - CSV Content
+     * @param { array } headers - CSV headers 
+     * @param { array } columnNameAllow - CSV allowed columns 
+     */
     processData({ csvData, headers, columnNameAllow }) {
         const newData = [];
         const DELIMITER = ";";

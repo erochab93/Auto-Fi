@@ -1,11 +1,12 @@
 {
-  "name": "Auto-Fi2",
+  "name": "auto_fi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "dev": "nodemon server.js",
-    "debug": "nodemon --inspect server.js",
+    "debug": "nodemon --inspect server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "mongodb": "^3.5.6",
+    "mongodb-memory-server": "^6.5.2",
     "multer": "^1.4.2"
   },
   "devDependencies": {

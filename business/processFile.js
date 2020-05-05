@@ -1,9 +1,18 @@
+/**
+ * This module will handle the conversion of the CSV file
+ */
+
 const { isEqual } = require('lodash');
 const { readFile } = require('../core/readFile');
 const { processData } = require('../core/processData');
 const validation = require('../core/validation');
 
 module.exports = {
+    /**
+     * 
+     * @param { HttpRequest } req 
+     * @param { HttpResponse } res 
+     */
     async processFile(req, res) {
         const { params: { providerName = null }, file = {} } = req;
         const { path = null } = file;
@@ -47,13 +56,17 @@ module.exports = {
             } else {
                 newData = processData({ csvData, headers, columnNameAllow });
             }
+
+            if (!newData) {
+                throw new Err('An error has ocurred.');
+            }
     
             return newData;
         }
         catch (error) {
-            console.log('Error reading the file', error);
+            console.log('Error reading the file: ', error);
             res.status(400).json({
-                messsage: 'Error reading the file' + error
+                messsage: 'Error reading the file: ' + error
             });
         }
 

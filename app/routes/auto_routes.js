@@ -1,31 +1,35 @@
 const multer = require('multer');
-const upload = multer({ dest: 'tmp/csv/' })
-const Binary = require('mongodb').Binary
+const upload = multer({ dest: 'tmp/csv/' });
 const { processFile } = require('../../business/processFile');
+const { saveAuto } = require('../../business/auto_service');
 
-module.exports = function(app, db) {
-    app.post('/api/upload/:providerName', upload.single('csv'), async (req, res) => {
+
+module.exports = function(app, database) {
+    /**
+     * This route will handle the upload of CSV file
+     */
+    app.post('/api/upload/:providerName', upload.single('csv'), async (req, res, next) => {
         try {
-            result = await processFile(req, res);
-            if (!result) {
-                res.send({'error': 'An error has ocurred.'});
-            }
-    
-            let buffer = new Buffer.from(result);
-            let encodedBuffer = buffer.toString('base64');
-            let insert_data = {};
-            insert_data.file_data = Binary(encodedBuffer);
-    
-            db.collection("cars").insertOne(insert_data, (err, result) => {
-                if (err) {
-                    res.send({'error': 'An error has ocurred.'});
-                } else {
-                    console.log('Entry saved succesfully');
-                    res.send(result.ops[0]);
-                }
-            });
+            data = await processFile(req, res);
+            result = await saveAuto(data, database, res)
+            
         } catch(err) {
-            res.send(err.message);
+            next(err);
         }
     });
+
+    /**
+     * This interceptor will catch not found routes and return a 404 error code
+     */
+    app.use((req, res, next) => {
+        res.status(404).json({ error: 'Not found'})
+    })
+
+
+    /**
+     * This interceptor will catch execption and return a 505 error code
+     */
+    app.use((err, req, res, next) => {
+        res.status(500).json({ error: err.message  })
+    })
 };
