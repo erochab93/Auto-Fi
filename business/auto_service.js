@@ -11,7 +11,7 @@ module.exports = {
      * @param { HttpResponse } res 
      */
     async saveAuto(data, database, res) {
-        let newData = { file_data: utils.convertBufferToBinary(data) };
+        let newData = { provider: data.provider, file_data: utils.convertBufferToBinary(data.data) };
         
         database.collection("cars").insertOne(newData, (err, data) => {
             if (err) {

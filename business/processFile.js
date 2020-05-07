@@ -40,7 +40,10 @@ module.exports = {
             'create date',
             'update date'];
 
-        let newData = [];
+        let newData = {
+            provider: providerName,
+            data: []
+        };
 
         try {
             csvData = await readFile(path);
@@ -52,9 +55,9 @@ module.exports = {
             let headers = Object.keys(csvData[0])
     
             if (isEqual(headers, columnNameAllow)) {
-                newData = csvData;
+                newData.data = csvData;
             } else {
-                newData = processData({ csvData, headers, columnNameAllow });
+                newData.data = processData({ csvData, headers, columnNameAllow });
             }
 
             if (!newData) {
